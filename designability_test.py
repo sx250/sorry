@@ -9,22 +9,21 @@ import pandas as pd
 import numpy as np
 from string import ascii_uppercase, ascii_lowercase
 alphabet_list = list(ascii_uppercase+ascii_lowercase)
-
 def get_info(contig):
-  F = []
-  free_chain = False
-  fixed_chain = False
-  sub_contigs = [x.split("-") for x in contig.split("/")]
-  for n,(a,b) in enumerate(sub_contigs):
-    if a[0].isalpha():
-      L = int(b)-int(a[1:]) + 1
-      F += [1] * L
-      fixed_chain = True
-    else:
-      L = int(b)
-      F += [0] * L
-      free_chain = True
-  return F,[fixed_chain,free_chain]
+    F = []
+    free_chain = False
+    fixed_chain = False
+    sub_contigs = [x.split("-") for y in contig.split("/") for x in y.split(":")]
+    for n,(a,b) in enumerate(sub_contigs):
+        if a[0].isalpha():
+            L = int(b)-int(a[1:]) + 1
+            F += [1] * L
+            fixed_chain = True
+        else:
+            L = int(b) - int(a) + 1
+            F += [0] * L
+            free_chain = True
+    return F, [fixed_chain, free_chain]
 
 def main(argv):
   ag = parse_args()
@@ -46,6 +45,7 @@ def main(argv):
   ag.add(["num_recycles=" ],     3,   int, ["number of recycles"])
   ag.add(["rm_aa="],            "C",  str, ["disable specific amino acids from being sampled"])
   ag.add(["num_designs="  ],      1,  int, ["number of designs to evaluate"])
+  ag.add(["contigs="      ], None,    str, ["contig definition"])
   ag.txt("-------------------------------------------------------------------------------------")
   o = ag.parse(argv)
 
