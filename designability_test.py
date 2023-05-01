@@ -1,3 +1,6 @@
+#this is from https://github.com/sokrypton/ColabDesign/blob/main/colabdesign/rf/designability_test.py
+#just want to change some of the codes and see the effect
+#beginner
 import os,sys
 
 from colabdesign.mpnn import mk_mpnn_model
